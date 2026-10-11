@@ -1,2 +1,12 @@
 import './App.css'
-export default App
+import Main from './components/Main';
+
+function App() {
+  return (
+    <div className="App">
+      <Main />
+    </div>
+  );
+}
+
+export default App;
