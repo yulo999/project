@@ -1,10 +1,12 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import { useState } from 'react';
+import './Main.css';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const Main = () => {
+  const [employees, setEmployees] = useState([
+    { id: 1, name: 'Mike', salary: 1000, isPromoted: false, hasBonus: false },
+    { id: 2, name: 'Jack', salary: 1200, isPromoted: false, hasBonus: false },
+    { id: 3, name: 'John', salary: 800, isPromoted: false, hasBonus: false },
+  ]);
+};
+
+export default Main;
