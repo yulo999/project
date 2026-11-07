@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import "./Main.css";
 
 const Main = () => {
@@ -9,34 +10,39 @@ const Main = () => {
   ]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState("all");
-  const [newName, setNewName] = useState("");
-  const [newSalary, setNewSalary] = useState("");
 
-  const addEmployee = (e) => {
-    e.preventDefault();
-    if (newName.trim() === "" || newSalary.trim() === "") return;
+  const { register, handleSubmit, reset } = useForm();
 
+  const addEmployee = (data) => {
     const newEmp = {
       id: Date.now(),
-      name: newName,
-      salary: parseInt(newSalary, 10),
+      name: data.newName,
+      salary: parseInt(data.newSalary, 10),
       isPromoted: false,
       hasBonus: false,
     };
 
     setEmployees([...employees, newEmp]);
-    setNewName("");
-    setNewSalary("");
+    reset();
   };
 
   const deleteEmployee = (id) => {
     setEmployees(employees.filter((emp) => emp.id !== id));
   };
+  
   const toggleBonus = (id) => {
     setEmployees(
       employees.map((emp) =>
         emp.id === id ? { ...emp, hasBonus: !emp.hasBonus } : emp,
       ),
+    );
+  };
+
+  const togglePromotion = (id) => {
+    setEmployees(
+      employees.map((emp) =>
+        emp.id === id ? { ...emp, isPromoted: !emp.isPromoted } : emp
+      )
     );
   };
 
@@ -63,6 +69,7 @@ const Main = () => {
     filter,
   );
   const bonusCount = employees.filter((emp) => emp.hasBonus).length;
+  
   return (
     <div className="app-container">
       <div className="app-info block-style">
@@ -132,18 +139,16 @@ const Main = () => {
 
       <div className="employee-add-form block-style">
         <h3>Добавьте нового сотрудника</h3>
-        <form onSubmit={addEmployee} className="add-form">
+        <form onSubmit={handleSubmit(addEmployee)} className="add-form">
           <input
             type="text"
             placeholder="Как его зовут?"
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
+            {...register("newName", { required: true })}
           />
           <input
             type="number"
             placeholder="З/П в $?"
-            value={newSalary}
-            onChange={(e) => setNewSalary(e.target.value)}
+            {...register("newSalary", { required: true })}
           />
           <button type="submit" className="btn btn-outline-light">
             Добавить
@@ -153,4 +158,5 @@ const Main = () => {
     </div>
   );
 };
+
 export default Main;
