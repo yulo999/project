@@ -1,7 +1,21 @@
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const schema = z.object({
+  newName: z.string().min(2, "Слишком короткое имя"),
+  newSalary: z.coerce.number().min(100, "Что так мало? Давай от 100$"),
+});
 
 const EmployeeAddForm = ({ onAdd }) => {
-  const { register, handleSubmit, reset } = useForm();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = (data) => {
     onAdd(data);
@@ -9,19 +23,35 @@ const EmployeeAddForm = ({ onAdd }) => {
   };
 
   return (
-    <div className="employee-add-form block-style">
-      <h3>Добавьте нового сотрудника</h3>
-      <form onSubmit={handleSubmit(onSubmit)} className="add-form">
-        <input
-          type="text"
-          placeholder="Как его зовут?"
-          {...register("newName", { required: true })}
-        />
-        <input
-          type="number"
-          placeholder="З/П в $?"
-          {...register("newSalary", { required: true })}
-        />
+    <div className="app-info block-style">
+      <h2>Добавьте нового сотрудника</h2>
+      <form className="add-form" onSubmit={handleSubmit(onSubmit)}>
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <input
+            type="text"
+            placeholder="Как его зовут?"
+            {...register("newName")}
+          />
+          {errors.newName && (
+            <span style={{ color: "#ff6b6b", fontSize: "12px", marginTop: "5px" }}>
+              {errors.newName.message}
+            </span>
+          )}
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column" }}>
+          <input
+            type="number"
+            placeholder="З/П в $?"
+            {...register("newSalary")}
+          />
+          {errors.newSalary && (
+            <span style={{ color: "#ff6b6b", fontSize: "12px", marginTop: "5px" }}>
+              {errors.newSalary.message}
+            </span>
+          )}
+        </div>
+
         <button type="submit" className="btn btn-outline-light">
           Добавить
         </button>
