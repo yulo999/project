@@ -58,6 +58,8 @@ const App = () => {
         return items.filter((item) => item.isPromoted);
       case "salaryMore1000":
         return items.filter((item) => item.salary > 1000);
+        case "bonus":
+        return items.filter((item) => item.hasBonus);
       default:
         return items;
     }
