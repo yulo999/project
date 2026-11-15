@@ -16,6 +16,12 @@ const SearchPanel = ({ searchTerm, setSearchTerm, filter, setFilter }) => {
           Все сотрудники
         </button>
         <button
+          className={`btn ${filter === "promoted" ? "btn-light" : "btn-outline-light"}`}
+          onClick={() => setFilter("promoted")}
+        >
+          На повышение
+        </button>
+        <button
           className={`btn ${filter === "salaryMore1000" ? "btn-light" : "btn-outline-light"}`}
           onClick={() => setFilter("salaryMore1000")}
         >
