@@ -4,7 +4,7 @@ import { z } from "zod";
 
 const schema = z.object({
   newName: z.string().min(2, "Слишком короткое имя"),
-  newSalary: z.coerce.number().min(100, "Что так мало? Давай от 100$"),
+  newSalary: z.coerce.number().min(100, "Минимальная з/п 100"),
 });
 
 const EmployeeAddForm = ({ onAdd }) => {
